@@ -1,0 +1,51 @@
+<div class="flex sm:flex-row gap-4 pb-6 justify-start items-center pt-6 md:pt-0 sm:items-center">
+    <i class="fa-solid fa-filter text-2xl text-gray-500"></i>
+    <input
+        type="text"
+        [(ngModel)] = senderFilter
+        placeholder="Expéditeur"
+        (input)="senderFilter = $any($event.target).value; filterEmails()"
+        class="mt-0.5 p-3 w-full bg-white rounded border-gray-300 shadow-sm sm:text-sm flex-1"
+    />
+    <input
+        type="text"
+        placeholder="Mot clé"
+        [(ngModel)] = keywordFilter
+        (input)="keywordFilter = $any($event.target).value; filterEmails()"
+        class="mt-0.5 flex-1 p-3 w-full rounded border-gray-300 shadow-sm sm:text-sm bg-white"
+    />
+
+    <div class="flex items-center gap-4">
+        <div class="sm:flex sm:gap-4">
+          <button
+            (click)="refreshList()"
+            class="block rounded-md bg-blue-500 px-5 py-2.5 text-sm font-medium text-white transition"
+          >
+            Rafraichir
+          </button>
+        </div>
+    </div>
+</div>
+<div class="shadow bg-white p-4 rounded w-full text-gray-900">
+    <div class="border-b border-gray-200 pb-4 mb-4 flex justify-between">
+        <p class="text-xl text-gray-700 font-semibold">E-mails reçus</p>
+        <p class="text-right text-gray-500 text-sm">{{ dateToday | date : 'dd/MM/yyyy'}}</p>
+    </div>
+    @for (mail of filteredEmails; track mail.sender) {
+    <div class="flex items-center justify-between pb-3">
+        <div class="flex items-center gap-4 px-4 py-1 rounded-full">
+            <div class="shrink-0 text-lg leading-none size-10 bg-blue-50 rounded-full flex items-center justify-center font-semibold">
+                {{ getSenderInitial(mail.sender) }}
+            </div>
+            <div class="">
+                <h3 class="font-medium text-gray-900 sm:text-lg">{{ clean(mail.sender) }}</h3>
+                <h4 class="text-gray-700 text-wrap ">{{mail.subject}}</h4>
+            </div>
+        </div>
+
+        <div  class="text-right text-gray-500 text-sm">
+            <h6>{{ mail.receivedAt | date: 'HH:mm' }}</h6>
+        </div>
+    </div>
+    }
+</div>
